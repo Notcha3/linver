@@ -49,13 +49,25 @@ static void PrintKernelArgs(void) {
 }
 
 static void PrintProtocol(void) {
-	const char *SessionType = getenv("XDG_SESSION_TYPE");
 
-	if (SessionType != NULL)
-		printf("Session type:\t", SessionType);
+ const char *EnvironmentList[8][2] = {{"Protocol\0", "XDG_SESSION_TYPE\0"},
+				 {"WM\0", "WINDOW_MANAGER\0"},
+				 {"DE\0", "DESKTOP_SESSION\0"},
+				 {"Terminal\0", "TERM_PROGRAM\0"},
+				 {"Shell\0","SHELL\0"},
+				 {"Username\0", "USER\0"},
+				 {"Locale\0", "LANG\0"},
+				 {"Home directory\0", "HOME\0"}};
+ char *TmpString = NULL;
+  
+ for(int a = 0; a<7; a++) {
+   TmpString = getenv(EnvironmentList[a][1]);
+		      
+    if(TmpString != NULL)
+     printf("%s:\t%s\n", EnvironmentList[a][0], TmpString);
+ }
 
-	else
-		puts("Session type:\tUnable to get");
+  
 }
 
 static void GetTotalMemory(void) {
@@ -65,7 +77,14 @@ static void GetTotalMemory(void) {
 	long MemorySize = PageSize * PhysPages;
 	
 	if (MemorySize>1000000000)
-	  printf("\n%s:\t%d%s", "Total Memory", (PhysPages * PageSize) / (int)pow(10, 9), "Gb");
+	  printf("%s:\t%d%s", "Total Memory", (PhysPages * PageSize) / (int)pow(10, 9), "Gb");
+	
+	else if (MemorySize == 0) return;
+	  
 	else
 	  printf("\n%s:\t%d%s", "Total Memory", (PhysPages * PageSize) / (int)pow(10, 6), "Mb");
+}
+
+static void GetRootFSstat(void) {
+  
 }
