@@ -1,5 +1,7 @@
 #include "firmware_ver.h"
 
+static void BIOSVendorAndRevision(void);
+
 void GetFirmwareVerAbstract(void) {
 	BIOSVendorAndRevision();
 }
@@ -17,11 +19,13 @@ static void BIOSVendorAndRevision(void) {
 		getdelim(&BIOSVerString, &StringSize, 0, BIOSVersion);
 		
                 printf("\nMotherboard firmware vendor:\t%s%s\t%s", BIOSVenString, "Motherboard firmware version:", BIOSVerString);
+		
+		fclose(BIOSVendor);
+		fclose(BIOSVersion);
         }
 
         else
                 puts("Motherboard firmware version:\tUnable to get");
 
-        fclose(BIOSVendor);
-	fclose(BIOSVersion);
+
 }

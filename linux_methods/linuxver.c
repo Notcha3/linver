@@ -1,10 +1,18 @@
 #include "linuxver.h"
 
+static void GetLinuxVer(void);
+static void PrintKernelArgs(void);
+static void PrintProtocol(void);
+static void GetTotalMemory(void);
+static void GetRootFSstat(void);
+
+
 void GetSysInfoAbstract(void) {
   GetLinuxVer();
   PrintKernelArgs();
   PrintProtocol();
   GetTotalMemory();
+  GetRootFSstat();
 }
 
 static void GetLinuxVer(void) {
@@ -33,18 +41,17 @@ static void PrintKernelArgs(void) {
 	FILE *CmdLine = NULL;
 	CmdLine = fopen("/proc/cmdline", "r");
 
-	if (CmdLine != NULL) {
+	if ((CmdLine != NULL)) {
 		char *CmdString = NULL;
 	
 		getdelim(&CmdString, &StringSize, 0, CmdLine);
 	
 		printf("Kernel boot parameters:\t%s", CmdString);
+		fclose(CmdLine);
 	}
 
 	else
 		puts("Kernel boot parameters:\tUnable to get");
-
-	fclose(CmdLine);
 
 }
 
@@ -77,12 +84,12 @@ static void GetTotalMemory(void) {
 	long MemorySize = PageSize * PhysPages;
 	
 	if (MemorySize>1000000000)
-	  printf("%s:\t%d%s", "Total Memory", (PhysPages * PageSize) / (int)pow(10, 9), "Gb");
+	  printf("%s:\t%zu%s", "Total Memory", (PhysPages * PageSize) / (size_t)pow(10, 9), "Gb");
 	
 	else if (MemorySize == 0) return;
 	  
 	else
-	  printf("\n%s:\t%d%s", "Total Memory", (PhysPages * PageSize) / (int)pow(10, 6), "Mb");
+	  printf("\n%s:\t%zu%s", "Total Memory", (PhysPages * PageSize) / (size_t)pow(10, 6), "Mb");
 }
 
 static void GetRootFSstat(void) {
