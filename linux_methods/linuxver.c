@@ -50,9 +50,6 @@ static void PrintKernelArgs(void) {
 		fclose(CmdLine);
 	}
 
-	else
-		puts("Kernel boot parameters:\tUnable to get");
-
 }
 
 static void PrintProtocol(void) {

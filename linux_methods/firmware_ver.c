@@ -24,8 +24,4 @@ static void BIOSVendorAndRevision(void) {
 		fclose(BIOSVersion);
         }
 
-        else
-                puts("Motherboard firmware version:\tUnable to get");
-
-
 }
