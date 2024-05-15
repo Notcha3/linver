@@ -4,8 +4,6 @@
 #endif
 
 #ifdef _WIN32
-#include "windows_methods/winclude.h"
+#include "win32_methods/winver.h"
+#include "win32_methods/firmver.h"
 #endif
-
-#include <stdlib.h>
-#include <stdio.h>
